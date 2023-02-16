@@ -215,7 +215,7 @@ NSString * const VSLCallStatsTotalMBsUsed = @"VSLCallStatsTotalMBsUsed";
     pjsua_call_get_info((pjsua_call_id)self.call.callId, &callInfo);
 
     if (callInfo.media_status != PJSUA_CALL_MEDIA_ACTIVE) {
-        VSLLogDebug(@"Stream is not active!");
+        //VSLLogDebug(@"Stream is not active!");
         return stats;
     }
     
@@ -243,13 +243,13 @@ NSString * const VSLCallStatsTotalMBsUsed = @"VSLCallStatsTotalMBsUsed";
                       VSLCallStatsTotalMBsUsed: [[NSNumber alloc] initWithFloat:self.totalMBsUsed]
                       };
         } else {
-            VSLLogDebug(@"Unknown stream stat found");
+            //VSLLogDebug(@"Unknown stream stat found");
             self.MOS = 0;
         }
     } else {
         char statusmsg[PJ_ERR_MSG_SIZE];
         pj_strerror(status, statusmsg, sizeof(statusmsg));
-        VSLLogDebug(@"No stream found, status: %s", statusmsg);
+        //VSLLogDebug(@"No stream found, status: %s", statusmsg);
 
         self.activeCodec = @"Unknown";
     }
@@ -263,7 +263,7 @@ NSString * const VSLCallStatsTotalMBsUsed = @"VSLCallStatsTotalMBsUsed";
         self.activeCodec = [NSString stringWithPJString:active_codec];
         self.framePackingTime = (int)self.streamInfo.info.aud.param->info.frm_ptime;
     } else {
-        VSLLogDebug(@"Stream is not an audio stream");
+        //VSLLogDebug(@"Stream is not an audio stream");
         self.activeCodec = @"Unknown";
     }
 }
@@ -283,7 +283,7 @@ NSString * const VSLCallStatsTotalMBsUsed = @"VSLCallStatsTotalMBsUsed";
     
     float R = Ro - Is - Id - Ie;
     
-    VSLLogDebug(@"R: %f", R);
+    //VSLLogDebug(@"R: %f", R);
 
     if (R > 100) {
         self.MOS = 4.5f;
@@ -292,7 +292,7 @@ NSString * const VSLCallStatsTotalMBsUsed = @"VSLCallStatsTotalMBsUsed";
             self.MOS = 1 + R * 0.035f + R * (R - 60.0f) * (100.0f - R) * 7.0f * pow(10.0f, -6.0f);
         } else {
             self.MOS = 0.0f;
-            VSLLogDebug(@"No MOS");
+            //VSLLogDebug(@"No MOS");
         }
     }
 }
@@ -444,7 +444,7 @@ NSString * const VSLCallStatsTotalMBsUsed = @"VSLCallStatsTotalMBsUsed";
     self.Tr = Tenc + 2 * Towtd + Tdec;
     self.Ta = Tenc + Towtd + Tdec;
     
-    VSLLogDebug(@"T: %f - Tr: %f - Ta: %f", self.T, self.Tr, self.Ta);
+    //VSLLogDebug(@"T: %f - Tr: %f - Ta: %f", self.T, self.Tr, self.Ta);
 }
 
 @end

@@ -6,7 +6,7 @@
 #ifndef VialerSIPLib_Example_Prefix_pch
 #define VialerSIPLib_Example_Prefix_pch
 
-#import "DDLogWrapper.h"
+#import "//DDLogWrapper.h"
 
 static const DDLogLevel ddLogLevel = DDLogLevelVerbose;
 

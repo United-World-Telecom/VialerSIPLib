@@ -152,7 +152,7 @@ NSString * const VSLNotificationUserInfoErrorStatusMessageKey = @"VSLNotificatio
         [account configureWithAccountConfiguration:accountConfiguration error:&accountConfigError];
         if (accountConfigError && error != NULL) {
             *error = accountConfigError;
-            VSLLogError(@"Account configuration error: %@", accountConfigError);
+            //VSLLogError(@"Account configuration error: %@", accountConfigError);
             return nil;
         }
     }
@@ -167,22 +167,19 @@ NSString * const VSLNotificationUserInfoErrorStatusMessageKey = @"VSLNotificatio
     [VSLEndpoint sharedEndpoint].missedCallBlock = missedCallBlock;
 }
 
-- (void)setLogCallBackBlock:(void (^)(DDLogMessage*))logCallBackBlock {
-    [VSLEndpoint sharedEndpoint].logCallBackBlock = logCallBackBlock;
-}
 
 - (void)registerAccountWithUser:(id<SIPEnabledUser> _Nonnull __autoreleasing)sipUser forceRegistration:(BOOL)force withCompletion:(void (^)(BOOL, VSLAccount * _Nullable))completion {
     NSError *accountConfigError;
     VSLAccount *account = [self createAccountWithSipUser:sipUser error:&accountConfigError];
     if (!account) {
-        VSLLogError(@"The configuration of the account has failed:\n%@", accountConfigError);
+        //VSLLogError(@"The configuration of the account has failed:\n%@", accountConfigError);
         completion(NO, nil);
     }
 
     account.forceRegistration = force;
     [account registerAccountWithCompletion:^(BOOL success, NSError * _Nullable error) {
         if (!success) {
-            VSLLogError(@"The registration of the account has failed.\n%@", error);
+            //VSLLogError(@"The registration of the account has failed.\n%@", error);
             completion(NO, nil);
         } else {
             completion(YES, account);

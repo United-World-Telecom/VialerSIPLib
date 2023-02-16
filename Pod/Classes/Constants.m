@@ -4,6 +4,3 @@
 //
 
 #import "Constants.h"
-#import <CocoaLumberjack/CocoaLumberjack.h>
-
-int const ddLogLevel = DDLogLevelVerbose;

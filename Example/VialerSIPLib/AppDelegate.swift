@@ -27,9 +27,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - Lifecycle
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        DDLogWrapper.setup()
+        //DDLogWrapper.setup()
         setupCallKit()
-        setupLogCallBack()
         setupVoIPEndpoint()
         setupAccount()
         return true
@@ -45,13 +44,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         var transportToUse: [VSLTransportConfiguration] {
             switch transportType {
             case "TLS"?:
-                DDLogWrapper.logInfo("Using TLS");
+                //DDLogWrapper.logInfo("Using TLS");
                 return [VSLTransportConfiguration(transportType: .TLS)!]
             case "TCP"?:
-                DDLogWrapper.logInfo("Using TCP");
+                //DDLogWrapper.logInfo("Using TCP");
                 return [VSLTransportConfiguration(transportType: .TCP)!]
             default:
-                DDLogWrapper.logInfo("Using UDP");
+                //DDLogWrapper.logInfo("Using UDP");
                 return [VSLTransportConfiguration(transportType: .UDP)!]
             }
         }
@@ -84,7 +83,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // Set your incoming call block here.
             setupIncomingCallBlock()
         } catch let error {
-            DDLogWrapper.logError("Error setting up VialerSIPLib: \(error)")
+            //DDLogWrapper.logError("Error setting up VialerSIPLib: \(error)")
         }
     }
 
@@ -96,7 +95,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         do {
             account = try VialerSIPLib.sharedInstance().createAccount(withSip: SipUser())
         } catch let error {
-            DDLogWrapper.logError("Could not create account. Error:\(error)\nExiting")
+            //DDLogWrapper.logError("Could not create account. Error:\(error)\nExiting")
             assert(false)
         }
     }
@@ -113,15 +112,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
-    
-    func setupLogCallBack() {
-        VialerSIPLib.sharedInstance().setLogCallBack { (logMessage) in
-            DDLogWrapper.log(message: logMessage)
-        }
-    }
 
     func displayIncomingCall(call: VSLCall) {
-        DDLogWrapper.logInfo("Incoming call block invoked, routing through CallKit.")
+        //DDLogWrapper.logInfo("Incoming call block invoked, routing through CallKit.")
         providerDelegate?.reportIncomingCall(call)
     }
 
@@ -132,7 +125,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         VialerSIPLib.sharedInstance().callManager.startCall(toNumber: handle, for:account, completion: { (call, error) in
             if error != nil {
-                DDLogWrapper.logError("Could not create outbound call. Error: \(error!)")
+                //DDLogWrapper.logError("Could not create outbound call. Error: \(error!)")
             }
             // TODO: Investigate the need of returning false in case of error here.
         })

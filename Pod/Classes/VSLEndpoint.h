@@ -4,7 +4,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <CocoaLumberjack/CocoaLumberjack.h>
 #import <VialerPJSIP/pjsua.h>
 #import "VSLEndpointConfiguration.h"
 
@@ -85,11 +84,6 @@ typedef NS_ENUM(NSInteger, VSLEndpointState) {
  * The missedCallBlock will be called when a call is completed elsewhere or the original call hung up.
  */
 @property (copy, nonatomic) void(^ _Nonnull missedCallBlock)(VSLCall * _Nullable call);
-
-/**
- The logCallBackBlock will be called when there is a log message to be shown.
- */
-@property (copy, nonatomic) void( ^ _Nonnull logCallBackBlock)(DDLogMessage * _Nonnull logMessage);
 
 /**
  *  References to the account that have been added to the endpoint.

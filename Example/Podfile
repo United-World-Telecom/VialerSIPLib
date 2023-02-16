@@ -1,4 +1,4 @@
-platform :ios, '10.0'
+platform :ios, '11.0'
 #use_frameworks! #!! Do not enable, causes an error about "target has transitive dependencies that include static binaries.... "
 
 def pods_for_all_targets
@@ -7,7 +7,6 @@ end
 
 target 'VialerSIPLib_Example' do
     pods_for_all_targets
-    pod 'SPLumberjackLogFormatter', :git => 'https://github.com/VoIPGRID/SPLumberjackLogFormatter.git'
 end
 
 target 'VialerSIPLib_Tests' do

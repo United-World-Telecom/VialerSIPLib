@@ -51,25 +51,25 @@ NSString * const VSLAudioControllerAudioResumed = @"VSLAudioControllerAudioResum
     } else if (output == VSLAudioControllerOutputOther) {
         [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
     }
-    VSLLogVerbose(output == VSLAudioControllerOutputSpeaker ? @"Speaker modus activated": @"Speaker modus deactivated");
+    //VSLLogVerbose(output == VSLAudioControllerOutputSpeaker ? @"Speaker modus activated": @"Speaker modus deactivated");
 }
 
 - (void)configureAudioSession {
     NSError *audioSessionCategoryError;
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord error:&audioSessionCategoryError];
-    VSLLogVerbose(@"Setting AVAudioSessionCategory to \"Play and Record\"");
+    //VSLLogVerbose(@"Setting AVAudioSessionCategory to \"Play and Record\"");
 
     if (audioSessionCategoryError) {
-        VSLLogError(@"Error setting the correct AVAudioSession category");
+        //VSLLogError(@"Error setting the correct AVAudioSession category");
     }
 
     // set the mode to voice chat
     NSError *audioSessionModeError;
     [[AVAudioSession sharedInstance] setMode:AVAudioSessionModeVoiceChat error:&audioSessionModeError];
-    VSLLogVerbose(@"Setting AVAudioSessionCategory to \"Mode Voice Chat\"");
+    //VSLLogVerbose(@"Setting AVAudioSessionCategory to \"Mode Voice Chat\"");
 
     if (audioSessionModeError) {
-        VSLLogError(@"Error setting the correct AVAudioSession mode");
+        //VSLLogError(@"Error setting the correct AVAudioSession mode");
     }
 }
 
@@ -82,7 +82,7 @@ NSString * const VSLAudioControllerAudioResumed = @"VSLAudioControllerAudioResum
 }
 
 - (BOOL)activateSoundDevice {
-    VSLLogDebug(@"Activating audiosession");
+    //VSLLogDebug(@"Activating audiosession");
     [self checkCurrentThreadIsRegisteredWithPJSUA];
     pjsua_set_no_snd_dev();
     pj_status_t status;
@@ -92,7 +92,7 @@ NSString * const VSLAudioControllerAudioResumed = @"VSLAudioControllerAudioResum
     } else {
         char statusmsg[PJ_ERR_MSG_SIZE];
         pj_strerror(status, statusmsg, sizeof(statusmsg));
-        VSLLogWarning(@"Failure in enabling sound device, status: %s", statusmsg);
+        //VSLLogWarning(@"Failure in enabling sound device, status: %s", statusmsg);
         
         return NO;
     }
@@ -108,7 +108,7 @@ NSString * const VSLAudioControllerAudioResumed = @"VSLAudioControllerAudioResum
 }
 
 - (void)deactivateSoundDevice {
-    VSLLogDebug(@"Deactivating audiosession");
+    //VSLLogDebug(@"Deactivating audiosession");
     [self checkCurrentThreadIsRegisteredWithPJSUA];
     pjsua_set_no_snd_dev();
 

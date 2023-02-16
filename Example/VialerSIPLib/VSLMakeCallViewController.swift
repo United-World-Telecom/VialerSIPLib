@@ -80,7 +80,7 @@ class VSLMakeCallViewController: UIViewController {
     fileprivate func setupCall() {
         self.callManager.startCall(toNumber: number, for: account ) { (call, error) in
             if error != nil {
-                DDLogWrapper.logError("Could not start call")
+                //DDLogWrapper.logError("Could not start call")
             } else {
                 self.call = call
                 DispatchQueue.main.async {
