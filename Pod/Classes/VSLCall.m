@@ -574,7 +574,7 @@ NSString * const VSLCallErrorDuringSetupCallNotification = @"VSLCallErrorDuringS
             
             // Hanging up the call takes some time. It could fail due to a bad or no internet connection.
             // Check after some delay if the call was indeed disconnected. If it's not the case disconnect it manually.
-            __weak VSLCall *weakSelf = self;
+            VSLCall *weakSelf = self;
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(VSLCallDelayTimeCheckSuccessfullHangup * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 if (!weakSelf || weakSelf.callState == VSLCallStateDisconnected) {
                     return; // After the delay, the call was indeed successfull disconnected.

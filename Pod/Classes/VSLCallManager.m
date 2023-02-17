@@ -286,7 +286,7 @@
 }
 
 - (void)callStateChanged:(NSNotification *)notification {
-    __weak VSLCall *call = [[notification userInfo] objectForKey:VSLNotificationUserInfoCallKey];
+    VSLCall *call = [[notification userInfo] objectForKey:VSLNotificationUserInfoCallKey];
     if (call.callState == VSLCallStateDisconnected) {
         [self removeCall:call];
     }

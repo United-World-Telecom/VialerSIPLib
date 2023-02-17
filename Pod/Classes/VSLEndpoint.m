@@ -41,7 +41,7 @@ static void onTransportStateChanged(pjsip_transport *tp, pjsip_transport_state s
 @property (assign) BOOL shouldReregisterAfterUnregister;
 @property (strong, nonatomic) VSLNetworkMonitor *networkMonitor;
 @property (nonatomic) BOOL onlyUseILBC;
-@property (weak, nonatomic) VSLCallManager *callManager;
+@property (nonatomic) VSLCallManager *callManager;
 @property (nonatomic) BOOL monitoringCalls;
 @end
 

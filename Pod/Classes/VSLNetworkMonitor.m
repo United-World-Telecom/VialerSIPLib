@@ -70,10 +70,10 @@ NSString * const VSLNetworkMonitorChangedNotification = @"VSLNetworkMonitorChang
     }
     self.isChangingNetwork = YES;
 
-    __weak VSLNetworkMonitor *weakSelf = self;
+    VSLNetworkMonitor *sSelf = self;
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(VSLNetworkMonitorDelayTimeForNotification * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
 //        //VSLLogInfo(@"Posting notification that internet connection has changed.");
-        weakSelf.isChangingNetwork = NO;
+        sSelf.isChangingNetwork = NO;
         [[NSNotificationCenter defaultCenter] postNotificationName:VSLNetworkMonitorChangedNotification object:nil];
     });
 }

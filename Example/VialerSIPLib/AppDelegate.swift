@@ -27,8 +27,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - Lifecycle
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        //DDLogWrapper.setup()
+//        DDLogWrapper.setup()
         setupCallKit()
+//        setupLogCallBack()
         setupVoIPEndpoint()
         setupAccount()
         return true
@@ -44,22 +45,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         var transportToUse: [VSLTransportConfiguration] {
             switch transportType {
             case "TLS"?:
-                //DDLogWrapper.logInfo("Using TLS");
+//                DDLogWrapper.logInfo("Using TLS");
                 return [VSLTransportConfiguration(transportType: .TLS)!]
             case "TCP"?:
-                //DDLogWrapper.logInfo("Using TCP");
+//                DDLogWrapper.logInfo("Using TCP");
                 return [VSLTransportConfiguration(transportType: .TCP)!]
             default:
-                //DDLogWrapper.logInfo("Using UDP");
+//                DDLogWrapper.logInfo("Using UDP");
                 return [VSLTransportConfiguration(transportType: .UDP)!]
             }
         }
+        
+//        let transportToUse : [VSLTransportConfiguration] = [VSLTransportConfiguration(transportType: .UDP)!]
 
         let endpointConfiguration = VSLEndpointConfiguration()
         endpointConfiguration.userAgent = "VialerSIPLib Example App"
         endpointConfiguration.transportConfigurations = transportToUse
-        endpointConfiguration.disableVideoSupport = !prefs.bool(forKey: "useVideo")
-        endpointConfiguration.unregisterAfterCall = prefs.bool(forKey: "unregisterAfterCall")
+        endpointConfiguration.disableVideoSupport = true
+        endpointConfiguration.unregisterAfterCall = false
 
         let ipChangeConfiguration = VSLIpChangeConfiguration()
         ipChangeConfiguration.ipChangeCallsUpdate = .update
@@ -69,21 +72,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         let codecConfiguration = VSLCodecConfiguration()
         codecConfiguration.audioCodecs = [
-            VSLAudioCodecs(audioCodec: .ILBC, andPriority: 210),
-            VSLAudioCodecs(audioCodec: .g711a, andPriority: 209)
+            VSLAudioCodecs(audioCodec: .g711a, andPriority: 254),
+            VSLAudioCodecs(audioCodec: .G711, andPriority: 253),
+            VSLAudioCodecs(audioCodec: .G722, andPriority: 252),
         ]
-        // TODO: Remove the below if not needed.
-//        codecConfiguration.videoCodecs = [
-//            VSLVideoCodecs(videoCodec: .H264, andPriority: 210)
-//        ]
+
         endpointConfiguration.codecConfiguration = codecConfiguration;
+        
+//        ep?.codecSetPriority("PCMA/8000", (254 - 0).toShort())
+//                    ep?.codecSetPriority("PCMU/8000", (254 - 1).toShort())
+//                    ep?.codecSetPriority("G722/8000", (254 - 2).toShort())
+
 
         do {
             try VialerSIPLib.sharedInstance().configureLibrary(withEndPointConfiguration: endpointConfiguration)
             // Set your incoming call block here.
             setupIncomingCallBlock()
         } catch let error {
-            //DDLogWrapper.logError("Error setting up VialerSIPLib: \(error)")
+//            DDLogWrapper.logError("Error setting up VialerSIPLib: \(error)")
         }
     }
 
@@ -95,7 +101,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         do {
             account = try VialerSIPLib.sharedInstance().createAccount(withSip: SipUser())
         } catch let error {
-            //DDLogWrapper.logError("Could not create account. Error:\(error)\nExiting")
+//            DDLogWrapper.logError("Could not create account. Error:\(error)\nExiting")
             assert(false)
         }
     }
@@ -112,9 +118,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
+    
+    func setupLogCallBack() {
+//        VialerSIPLib.sharedInstance().setLogCallBack { (logMessage) in
+////            DDLogWrapper.log(message: logMessage)
+//        }
+    }
 
     func displayIncomingCall(call: VSLCall) {
-        //DDLogWrapper.logInfo("Incoming call block invoked, routing through CallKit.")
+//        DDLogWrapper.logInfo("Incoming call block invoked, routing through CallKit.")
         providerDelegate?.reportIncomingCall(call)
     }
 
@@ -125,7 +137,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         VialerSIPLib.sharedInstance().callManager.startCall(toNumber: handle, for:account, completion: { (call, error) in
             if error != nil {
-                //DDLogWrapper.logError("Could not create outbound call. Error: \(error!)")
+//                DDLogWrapper.logError("Could not create outbound call. Error: \(error!)")
             }
             // TODO: Investigate the need of returning false in case of error here.
         })

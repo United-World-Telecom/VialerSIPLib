@@ -25,7 +25,7 @@ NSString * const VSLCallStatsTotalMBsUsed = @"VSLCallStatsTotalMBsUsed";
 
 @property (nonatomic) int framePackingTime;
 @property (nonatomic) NSDictionary* codecSettings;
-@property (weak, nonatomic) VSLCall* call;
+@property (nonatomic) VSLCall* call;
 
 /**
  * Send loudness rating (dB)

@@ -82,7 +82,7 @@ NSString * const CallKitProviderDelegateInboundCallRejectedNotification = @"Call
  * "native" CallKit interface.
  */
 - (void)provider:(CXProvider *)provider performAnswerCallAction:(CXAnswerCallAction *)action {
-    __weak VSLCall *call = [self.callManager callWithUUID:action.callUUID];
+    VSLCall *call = [self.callManager callWithUUID:action.callUUID];
     if (call) {
         [self.callManager.audioController configureAudioSession];
 
@@ -114,7 +114,7 @@ NSString * const CallKitProviderDelegateInboundCallRejectedNotification = @"Call
  */
 - (void)provider:(CXProvider *)provider performEndCallAction:(CXEndCallAction *)action {
     // Find call.
-    __weak VSLCall *call = [self.callManager callWithUUID:action.callUUID];
+    VSLCall *call = [self.callManager callWithUUID:action.callUUID];
     if (!call) {
         //VSLLogInfo(@"Error hanging up call(%@). No call found.", action.callUUID.UUIDString);
         [action fulfill];
@@ -145,7 +145,7 @@ NSString * const CallKitProviderDelegateInboundCallRejectedNotification = @"Call
  * Delegate method called when CallKit approves the apps request to start an outbound call.
  */
 - (void)provider:(CXProvider *)provider performStartCallAction:(CXStartCallAction *)action {
-    __weak VSLCall *call = [self.callManager callWithUUID:action.callUUID];
+    VSLCall *call = [self.callManager callWithUUID:action.callUUID];
     [self.callManager.audioController configureAudioSession];
 
     [call startWithCompletion:^(NSError *error) {
@@ -166,7 +166,7 @@ NSString * const CallKitProviderDelegateInboundCallRejectedNotification = @"Call
 }
 
 - (void)provider:(CXProvider *)provider performSetMutedCallAction:(CXSetMutedCallAction *)action {
-    __weak VSLCall *call = [self.callManager callWithUUID:action.callUUID];
+    VSLCall *call = [self.callManager callWithUUID:action.callUUID];
     if (!call) {
         [action fail];
         return;
@@ -183,7 +183,7 @@ NSString * const CallKitProviderDelegateInboundCallRejectedNotification = @"Call
 }
 
 - (void)provider:(CXProvider *)provider performSetHeldCallAction:(CXSetHeldCallAction *)action {
-    __weak VSLCall *call = [self.callManager callWithUUID:action.callUUID];
+    VSLCall *call = [self.callManager callWithUUID:action.callUUID];
     if (!call) {
         [action fail];
         return;
@@ -200,7 +200,7 @@ NSString * const CallKitProviderDelegateInboundCallRejectedNotification = @"Call
 }
 
 - (void)provider:(CXProvider *)provider performPlayDTMFCallAction:(CXPlayDTMFCallAction *)action {
-    __weak VSLCall *call = [self.callManager callWithUUID:action.callUUID];
+    VSLCall *call = [self.callManager callWithUUID:action.callUUID];
     if (!call) {
         [action fail];
         return;
@@ -229,7 +229,7 @@ NSString * const CallKitProviderDelegateInboundCallRejectedNotification = @"Call
 }
 
 - (void)callStateChanged:(NSNotification *)notification {
-    __weak VSLCall *call = [[notification userInfo] objectForKey:VSLNotificationUserInfoCallKey];
+    VSLCall *call = [[notification userInfo] objectForKey:VSLNotificationUserInfoCallKey];
 
     switch (call.callState) {
         case VSLCallStateNull:
