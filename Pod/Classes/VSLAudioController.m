@@ -44,14 +44,22 @@ NSString * const VSLAudioControllerAudioResumed = @"VSLAudioControllerAudioResum
     return VSLAudioControllerOutputOther;
 }
 
-- (void)setOutput:(VSLAudioControllerOutputs)output {
+- (void)setOutput:(VSLAudioControllerOutputs)output andInput:(AVAudioSessionPortDescription *)input {
     AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+    if (input.portType == AVAudioSessionPortBluetoothA2DP || input.portType == AVAudioSessionPortBluetoothHFP || input.portType == AVAudioSessionPortBluetoothLE) {
+        [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
+        [audioSession setPreferredInput:input error:nil];
+    } else if (input.portType == AVAudioSessionPortBuiltInMic || input.portType == AVAudioSessionPortBuiltInReceiver) {
+        [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
+        [audioSession setPreferredInput:input error:nil];
+    } else if (input.portType == AVAudioSessionPortHeadphones || input.portType == AVAudioSessionPortHeadsetMic) {
+        [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
+        [audioSession setPreferredInput:input error:nil];
+    }
+    
     if (output == VSLAudioControllerOutputSpeaker) {
         [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
-    } else if (output == VSLAudioControllerOutputOther) {
-        [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
     }
-    //VSLLogVerbose(output == VSLAudioControllerOutputSpeaker ? @"Speaker modus activated": @"Speaker modus deactivated");
 }
 
 - (void)configureAudioSession {

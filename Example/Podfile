@@ -7,6 +7,13 @@ end
 
 target 'VialerSIPLib_Example' do
     pods_for_all_targets
+    pod 'SwiftDate'
+    pod 'SnackBar.swift'
+    pod 'GoogleUtilities', :modular_headers => true
+    pod 'FirebaseCore', :modular_headers => true
+    pod 'FirebaseCoreInternal', :modular_headers => true
+    pod 'FirebaseCrashlytics', :modular_headers => true
+    pod 'Firebase/AnalyticsWithoutAdIdSupport', :modular_headers => true
 end
 
 target 'VialerSIPLib_Tests' do
