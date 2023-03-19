@@ -50,7 +50,7 @@ NSString * const VSLAudioControllerAudioResumed = @"VSLAudioControllerAudioResum
         [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
         [audioSession setPreferredInput:input error:nil];
     } else if ([port isEqualToString:AVAudioSessionPortBuiltInMic] || [port isEqualToString:AVAudioSessionPortBuiltInReceiver]) {
-        [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
+        [audioSession overrideOutputAudioPort:output == VSLAudioControllerOutputSpeaker ? AVAudioSessionPortOverrideSpeaker : AVAudioSessionPortOverrideNone error:nil];
         [audioSession setPreferredInput:input error:nil];
     } else if ([port isEqualToString:AVAudioSessionPortHeadphones] || [port isEqualToString:AVAudioSessionPortHeadsetMic]) {
         [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
