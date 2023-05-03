@@ -73,7 +73,11 @@ NSString * const CallKitProviderDelegateInboundCallRejectedNotification = @"Call
     update.remoteHandle = handle;
 
     //VSLLogVerbose(@"Updating CallKit provider with UUID: %@", call.uuid.UUIDString);
-    [self.provider reportCallWithUUID:call.uuid updated:update];
+    [self.provider reportNewIncomingCallWithUUID:call.uuid update:update completion:^(NSError * _Nullable error) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"AppDelegate.Notification.IncomingCall"
+                                                            object:self
+                                                          userInfo:nil];
+    }];
 }
 
 // MARK: - CXProviderDelegate
