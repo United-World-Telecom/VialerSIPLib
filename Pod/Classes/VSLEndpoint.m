@@ -740,6 +740,12 @@ static void onIncomingCall(pjsua_acc_id acc_id, pjsua_call_id call_id, pjsip_rx_
         
         VSLCallManager *callManager = [VialerSIPLib sharedInstance].callManager;
         VSLCall *call = [callManager lastCallForAccount:account]; // TODO: safe to say that the last one is the right one?
+        
+        if ([call isEqual:NULL]) {
+            call = [[VSLCall alloc] initInboundCallWithCallId:call_id account:account];
+            [callManager addCall:call];
+            call = [callManager lastCallForAccount:account];
+        }
      
         if (call) {
             call.callId = call_id;
