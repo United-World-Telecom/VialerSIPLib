@@ -60,7 +60,7 @@
 - (void)startCallToNumber:(NSString *)number forAccount:(VSLAccount *)account completion:(void (^)(VSLCall *call, NSError *error))completion {
     [account registerAccountWithCompletion:^(BOOL success, NSError * _Nullable error) {
         if (!success) {
-            //VSLLogError(@"Error registering the account: %@", error);
+            NSLOG(@"Error registering the account: %@", error);
             dispatch_async(dispatch_get_main_queue(), ^{
                 VSLBlockSafeRun(completion, nil, error);
             });
@@ -73,7 +73,7 @@
 
             [self requestCallKitAction:startCallAction completion:^(NSError *error) {
                 if (error) {
-                    //VSLLogError(@"Error requesting \"Start Call Transaction\" error: %@", error);
+                    NSLOG(@"Error requesting \"Start Call Transaction\" error: %@", error);
                     [self removeCall:call];
                     dispatch_async(dispatch_get_main_queue(), ^{
                         VSLBlockSafeRun(completion, nil, error);
@@ -121,7 +121,7 @@
     CXTransaction *transaction = [[CXTransaction alloc] initWithAction:action];
     [self.callController requestTransaction:transaction completion:^(NSError * _Nullable error) {
         if (error) {
-            //VSLLogError(@"Error requesting transaction: %@. Error:%@", transaction, error);
+            NSLOG(@"Error requesting transaction: %@. Error:%@", transaction, error);
             dispatch_async(dispatch_get_main_queue(), ^{
                 VSLBlockSafeRun(completion,error);
             });
@@ -135,7 +135,7 @@
 
 - (void)addCall:(VSLCall *)call {
     [self.calls addObject:call];
-    //VSLLogVerbose(@"Call(%@) added. Calls count:%ld",call.uuid.UUIDString, (long)[self.calls count]);
+    NSLog(@"Call(%@) added. Calls count:%ld",call.uuid.UUIDString, (long)[self.calls count]);
 }
 
 - (void)removeCall:(VSLCall *)call {
@@ -145,7 +145,7 @@
         self.calls = nil;
         self.audioController = nil;
     }
-    //VSLLogVerbose(@"Call(%@) removed. Calls count: %ld",call.uuid.UUIDString, (long)[self.calls count]);
+    NSLog(@"Call(%@) removed. Calls count: %ld",call.uuid.UUIDString, (long)[self.calls count]);
 }
 
 - (void)endAllCalls {
@@ -154,11 +154,11 @@
     }
     
     for (VSLCall *call in self.calls) {
-        //VSLLogVerbose(@"Ending call: %@", call.uuid.UUIDString);
+        NSLog(@"Ending call: %@", call.uuid.UUIDString);
         NSError *hangupError;
         [call hangup:&hangupError];
         if (hangupError) {
-            //VSLLogError(@"Could not hangup call(%@). Error: %@", call.uuid.UUIDString, hangupError);
+            NSLOG(@"Could not hangup call(%@). Error: %@", call.uuid.UUIDString, hangupError);
         } else {
             [self.audioController deactivateAudioSession];
         }
@@ -180,7 +180,7 @@
  *  @retrun A VSLCall object or nil if not found.
  */
 - (VSLCall *)callWithUUID:(NSUUID *)uuid {
-    //VSLLogVerbose(@"Looking for a call with UUID:%@", uuid.UUIDString);
+    NSLog(@"Looking for a call with UUID:%@", uuid.UUIDString);
     NSUInteger callIndex = [self.calls indexOfObjectPassingTest:^BOOL(VSLCall* _Nonnull call, NSUInteger idx, BOOL * _Nonnull stop) {
         if ([call.uuid isEqual:uuid] && uuid) {
             return YES;
@@ -190,10 +190,10 @@
 
     if (callIndex != NSNotFound) {
         VSLCall *call = [self.calls objectAtIndex:callIndex];
-        //VSLLogDebug(@"VSLCall found for UUID:%@ VSLCall:%@", uuid.UUIDString, call);
+        NSLog(@"VSLCall found for UUID:%@ VSLCall:%@", uuid.UUIDString, call);
         return call;
     }
-    //VSLLogDebug(@"No VSLCall found for UUID:%@", uuid.UUIDString);
+    NSLog(@"No VSLCall found for UUID:%@", uuid.UUIDString);
     return nil;
 }
 
@@ -272,14 +272,14 @@
 }
 
 - (void)reinviteActiveCallsForAccount:(VSLAccount *)account {
-    //VSLLogDebug(@"Reinviting calls");
+    NSLog(@"Reinviting calls");
     for (VSLCall *call in [self activeCallsForAccount:account]) {
         [call reinvite];
     }
 }
 
 - (void)updateActiveCallsForAccount:(VSLAccount *)account {
-    //VSLLogDebug(@"Sent UPDATE for calls");
+    NSLog(@"Sent UPDATE for calls");
     for (VSLCall *call in [self activeCallsForAccount:account]) {
         [call update];
     }

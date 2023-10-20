@@ -135,7 +135,7 @@ static void onTransportStateChanged(pjsip_transport *tp, pjsip_transport_state s
         return NO;
     }
 
-    //VSLLogDebug(@"Creating new PJSIP Endpoint instance.");
+    NSLog(@"Creating new PJSIP Endpoint instance.");
     self.state = VSLEndpointStarting;
 
 
@@ -305,7 +305,7 @@ static void onTransportStateChanged(pjsip_transport *tp, pjsip_transport_state s
 }
 
 - (void)destroyPJSUAInstance {
-    //VSLLogDebug(@"PJSUA was already running destroying old instance.");
+    NSLog(@"PJSUA was already running destroying old instance.");
     self.state = VSLEndpointClosing;
     [self stopNetworkMonitoring];
     [self.callManager endAllCalls];
@@ -322,7 +322,7 @@ static void onTransportStateChanged(pjsip_transport *tp, pjsip_transport_state s
         if (status != PJ_SUCCESS) {
             char statusmsg[PJ_ERR_MSG_SIZE];
             pj_strerror(status, statusmsg, sizeof(statusmsg));
-            //VSLLogError(@"Error registering thread at PJSUA, status: %s", statusmsg);
+            NSLOG(@"Error registering thread at PJSUA, status: %s", statusmsg);
         }
     }
 
@@ -335,7 +335,7 @@ static void onTransportStateChanged(pjsip_transport *tp, pjsip_transport_state s
     if (status != PJ_SUCCESS) {
         char statusmsg[PJ_ERR_MSG_SIZE];
         pj_strerror(status, statusmsg, sizeof(statusmsg));
-        //VSLLogWarning(@"Error stopping SIP Endpoint, status: %s", statusmsg);
+        NSLog(@"Error stopping SIP Endpoint, status: %s", statusmsg);
     }
 
     self.state = VSLEndpointStopped;
@@ -408,7 +408,7 @@ static void onTransportStateChanged(pjsip_transport *tp, pjsip_transport_state s
     // Register thread if needed.
     NSError *threadError;
     if (![self createPJSIPThreadWithError:&threadError]) {
-        //VSLLogError(@"Error registering the thread for PJSIP: %@", threadError);
+        NSLOG(@"Error registering the thread for PJSIP: %@", threadError);
         return NO;
     }
     
@@ -416,7 +416,7 @@ static void onTransportStateChanged(pjsip_transport *tp, pjsip_transport_state s
     if (status != PJ_SUCCESS) {
         char statusmsg[PJ_ERR_MSG_SIZE];
         pj_strerror(status, statusmsg, sizeof(statusmsg));
-        //VSLLogError(@"Error getting list of audio codecs, status: %s", statusmsg);
+        NSLOG(@"Error getting list of audio codecs, status: %s", statusmsg);
         return NO;
     }
 
@@ -429,7 +429,7 @@ static void onTransportStateChanged(pjsip_transport *tp, pjsip_transport_state s
         if (status != PJ_SUCCESS) {
             char statusmsg[PJ_ERR_MSG_SIZE];
             pj_strerror(status, statusmsg, sizeof(statusmsg));
-            //VSLLogError(@"Error setting codec priority to the correct value, status: %s", statusmsg);
+            NSLOG(@"Error setting codec priority to the correct value, status: %s", statusmsg);
             return NO;
         }
     }
@@ -493,7 +493,7 @@ static void onTransportStateChanged(pjsip_transport *tp, pjsip_transport_state s
     if (status != PJ_SUCCESS) {
         char statusmsg[PJ_ERR_MSG_SIZE];
         pj_strerror(status, statusmsg, sizeof(statusmsg));
-        //VSLLogError(@"Error getting list of video codecs, status: %d", statusmsg);
+        NSLOG(@"Error getting list of video codecs, status: %d", statusmsg);
         return NO;
     } else {
         for (NSUInteger i = 0; i < videoCodecCount; i++) {
@@ -555,19 +555,19 @@ static void logCallBack(int logLevel, const char *data, int len) {
 
     switch (logLevel) {
         case 1:
-            //VSLLogError(@"%@", logString);
+            NSLOG(@"%@", logString);
             break;
         case 2:
-            //VSLLogWarning(@"%@", logString);
+            NSLog(@"%@", logString);
             break;
         case 3:
             //VSLLogInfo(@"%@", logString);
             break;
         case 4:
-            //VSLLogDebug(@"%@", logString);
+            NSLog(@"%@", logString);
             break;
         default:
-            //VSLLogVerbose(@"%@", logString);
+            NSLog(@"%@", logString);
             break;
     }
 
@@ -605,7 +605,7 @@ static void onCallState(pjsua_call_id callId, pjsip_event *event) {
     pjsua_call_info callInfo;
     pjsua_call_get_info(callId, &callInfo);
 
-    //VSLLogVerbose(@"PJSUA callback: call state changed to %@.", VSLCallStateString(callInfo.state));
+    NSLog(@"PJSUA callback: call state changed to %@.", VSLCallStateString(callInfo.state));
     
     VSLAccount *account = [[VSLEndpoint sharedEndpoint] lookupAccount:callInfo.acc_id];
     if (account) {
@@ -613,7 +613,7 @@ static void onCallState(pjsua_call_id callId, pjsip_event *event) {
         if (call) {
             [call callStateChanged:callInfo];
         } else {
-            //VSLLogWarning(@"Received updated CallState(%@) for UNKNOWN call(id: %d)", VSLCallStateString(callInfo.state) , callId);
+            NSLog(@"Received updated CallState(%@) for UNKNOWN call(id: %d)", VSLCallStateString(callInfo.state) , callId);
         }
     }
 }
@@ -622,14 +622,14 @@ static void onCallState(pjsua_call_id callId, pjsip_event *event) {
  * Notify application when media state in the call has changed.
  */
 static void onCallMediaState(pjsua_call_id call_id) {
-    //VSLLogVerbose(@"PJSUA callback: media state in the call has changed.");
+    NSLog(@"PJSUA callback: media state in the call has changed.");
     pjsua_call_info callInfo;
     pjsua_call_get_info(call_id, &callInfo);
 
     VSLAccount *account = [[VSLEndpoint sharedEndpoint] lookupAccount:callInfo.acc_id];
     if (account) {
         VSLCall *call = [[VSLEndpoint sharedEndpoint].callManager callWithCallId:call_id];
-        //VSLLogVerbose(@"Received MediaState update for call:%@", call.uuid.UUIDString);
+        NSLog(@"Received MediaState update for call:%@", call.uuid.UUIDString);
         if (call) {
             [call mediaStateChanged:callInfo];
         }
@@ -640,14 +640,14 @@ static void onCallMediaState(pjsua_call_id call_id) {
  * Notify application when registration or unregistration has been initiated.
  */
 static void onRegStarted2(pjsua_acc_id acc_id, pjsua_reg_info *info) {
-    //VSLLogVerbose(@"PJSUA callback: registration or unregistration has been initiated.");
+    NSLog(@"PJSUA callback: registration or unregistration has been initiated.");
 }
 
 /**
  * Notify application when registration status has changed.
  */
 static void onRegState2(pjsua_acc_id acc_id, pjsua_reg_info *info) {
-    //VSLLogVerbose(@"PJSUA callback: registration status has changed.");
+    NSLog(@"PJSUA callback: registration status has changed.");
 
     VSLAccount *account = [[VSLEndpoint sharedEndpoint] lookupAccount:acc_id];
     if (account) {
@@ -683,12 +683,12 @@ static void onRegState2(pjsua_acc_id acc_id, pjsua_reg_info *info) {
  * Notification about media events such as video notifications. Adjust renderer window size to original video size.
  */
 static void onCallMediaEvent(pjsua_call_id call_id, unsigned med_idx, pjmedia_event *event) {
-    //VSLLogVerbose(@"PJSUA callback: media event.");
+    NSLog(@"PJSUA callback: media event.");
     
     #if PJSUA_HAS_VIDEO
         if (event->type == PJMEDIA_EVENT_FMT_CHANGED) {
             char event_name[5];
-            //VSLLogVerbose(@"Media event %s", pjmedia_fourcc_name(event->type, event_name));
+            NSLog(@"Media event %s", pjmedia_fourcc_name(event->type, event_name));
             pjsua_call_info ci;
             pjsua_vid_win_id wid;
             pjmedia_rect_size size;
@@ -713,7 +713,7 @@ static void onCallMediaEvent(pjsua_call_id call_id, unsigned med_idx, pjmedia_ev
  * This is a general notification callback which is called whenever a transaction within the call has changed state.
  */
 static void onTxStateChange(pjsua_call_id call_id, pjsip_transaction *tx, pjsip_event *event) {
-    //VSLLogVerbose(@"PJSUA callback: transaction within the call has changed state.");
+    NSLog(@"PJSUA callback: transaction within the call has changed state.");
     pjsua_call_info callInfo;
     pjsua_call_get_info(call_id, &callInfo);
 
@@ -729,7 +729,7 @@ static void onTxStateChange(pjsua_call_id call_id, pjsip_transaction *tx, pjsip_
  * Notify application on incoming call, a SIP INVITE is received.
  */
 static void onIncomingCall(pjsua_acc_id acc_id, pjsua_call_id call_id, pjsip_rx_data *rdata) {
-    //VSLLogVerbose(@"PJSUA callback: incoming call.");
+    NSLog(@"PJSUA callback: incoming call.");
     VSLEndpoint *endpoint = [VSLEndpoint sharedEndpoint];
     VSLAccount *account = [endpoint lookupAccount:acc_id];
     if (account) {
@@ -758,11 +758,11 @@ static void onIncomingCall(pjsua_acc_id acc_id, pjsua_call_id call_id, pjsip_rx_
                 [VSLEndpoint sharedEndpoint].incomingCallBlock(call);
             }
         } else {
-            //VSLLogWarning(@"Could not find a call with if %d.", call_id);
+            NSLog(@"Could not find a call with if %d.", call_id);
         }
         call = nil;
     } else {
-        //VSLLogWarning(@"Could not accept incoming call. No account found with ID:%d", acc_id);
+        NSLog(@"Could not accept incoming call. No account found with ID:%d", acc_id);
     }
 }
 
@@ -770,7 +770,7 @@ static void onIncomingCall(pjsua_acc_id acc_id, pjsua_call_id call_id, pjsip_rx_
  * Notify application of the status of previously sent call transfer request.
  */
 static void onCallTransferStatus(pjsua_call_id callId, int statusCode, const pj_str_t *statusText, pj_bool_t final, pj_bool_t *continueNotifications) {
-    //VSLLogVerbose(@"PJSUA callback: the status of previously sent call transfer request.");
+    NSLog(@"PJSUA callback: the status of previously sent call transfer request.");
     VSLCall *call = [[VSLEndpoint sharedEndpoint].callManager callWithCallId:callId];
     if (call) {
         [call callTransferStatusChangedWithStatusCode:statusCode statusText:[NSString stringWithPJString:*statusText] final:final == 1];
@@ -812,7 +812,7 @@ static void onCallTransferStatus(pjsua_call_id callId, int statusCode, const pj_
                     // Call pjsip_transport_shutdown or pjsua_transport_close() for each tId? https://trac.pjsip.org/repos/ticket/1840 '2018: need to deprecate this API'.
                     //VSLLogInfo(@"SUCCESS: Destroyed transport: %d", i);
                 } else {
-                    //VSLLogError(@"FAILED: Destroyed transport: %d", i);
+                    NSLOG(@"FAILED: Destroyed transport: %d", i);
                 }
             }
         }
@@ -839,7 +839,7 @@ static void onCallTransferStatus(pjsua_call_id callId, int statusCode, const pj_
             if (!self.monitoringCalls) {
                 for (VSLAccount *account in self.accounts) {
                     if ([self.callManager firstCallForAccount:account]) {
-                        //VSLLogVerbose(@"Starting network monitor");
+                        NSLog(@"Starting network monitor");
                         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(ipAddressChanged:) name:VSLNetworkMonitorChangedNotification object:nil];
                         [self.networkMonitor startMonitoring];
                         self.monitoringCalls = YES;
@@ -875,11 +875,11 @@ static void onCallTransferStatus(pjsua_call_id callId, int statusCode, const pj_
 
     // If there is no active call anymore for any account, stop the reachability monitoring
     if (!activeCallForAnyAccount) {
-        //VSLLogVerbose(@"No active calls for any account, stopping network monitor");
+        NSLog(@"No active calls for any account, stopping network monitor");
         @try {
             [[NSNotificationCenter defaultCenter] removeObserver:self name:VSLNetworkMonitorChangedNotification object:nil];
         } @catch (NSException *exception) {
-            //VSLLogWarning(@"Exception on removing the reachability change notification.");
+            NSLog(@"Exception on removing the reachability change notification.");
         }
         [self.networkMonitor stopMonitoring];
         self.networkMonitor = nil;
@@ -905,7 +905,7 @@ static void onCallTransferStatus(pjsua_call_id callId, int statusCode, const pj_
     if (status != PJ_SUCCESS) {
         char statusmsg[PJ_ERR_MSG_SIZE];
         pj_strerror(status, statusmsg, sizeof(statusmsg));
-        //VSLLogError(@"Error handling ip change, status: %s", statusmsg);
+        NSLOG(@"Error handling ip change, status: %s", statusmsg);
     }
 }
 
@@ -919,31 +919,31 @@ static void onIpChangeProgress(pjsua_ip_change_op op, pj_status_t status, const 
 
     switch (op) {
         case PJSUA_IP_CHANGE_OP_NULL: {
-            //VSLLogDebug(@"Hasn't start ip change process, status: %s", statusmsg);
+            NSLog(@"Hasn't start ip change process, status: %s", statusmsg);
             break;
         }
         case PJSUA_IP_CHANGE_OP_RESTART_LIS: {
-            //VSLLogDebug(@"The restart listener process, status: %s", statusmsg);
+            NSLog(@"The restart listener process, status: %s", statusmsg);
             break;
         }
         case PJSUA_IP_CHANGE_OP_ACC_SHUTDOWN_TP: {
-            //VSLLogDebug(@"The shutdown transport process, statust: %s", statusmsg);
+            NSLog(@"The shutdown transport process, statust: %s", statusmsg);
             break;
         }
         case PJSUA_IP_CHANGE_OP_ACC_UPDATE_CONTACT: {
-            //VSLLogDebug(@"The update contact process, status: %s", statusmsg);
+            NSLog(@"The update contact process, status: %s", statusmsg);
             break;
         }
         case PJSUA_IP_CHANGE_OP_ACC_HANGUP_CALLS: {
-            //VSLLogDebug(@"The hanging up call process, status: %s", statusmsg);
+            NSLog(@"The hanging up call process, status: %s", statusmsg);
             break;
         }
         case PJSUA_IP_CHANGE_OP_ACC_REINVITE_CALLS: {
-            //VSLLogDebug(@"The re-INVITE call process, status: %s", statusmsg);
+            NSLog(@"The re-INVITE call process, status: %s", statusmsg);
             break;
         }
         default:
-            //VSLLogError(@"Unhandled ip change operation encountered, status: %s", statusmsg);
+            NSLOG(@"Unhandled ip change operation encountered, status: %s", statusmsg);
             break;
     }
 }
@@ -969,17 +969,17 @@ static void onIpChangeProgress(pjsua_ip_change_op op, pj_status_t status, const 
             VSLCall *call = [[VSLEndpoint sharedEndpoint].callManager callWithCallId:call_id];;
             if (call) {
                 call.terminateReason = reason;
-                //VSLLogDebug(@"Call was terminated for reason: %@", VSLCallTerminateReasonString(reason));
+                NSLog(@"Call was terminated for reason: %@", VSLCallTerminateReasonString(reason));
                 [VSLEndpoint sharedEndpoint].missedCallBlock(call);
             } else {
-                //VSLLogWarning(@"Received updated CallState(%@) for UNKNOWN call(id: %d)", VSLCallStateString(callInfo.state) , call_id);
+                NSLog(@"Received updated CallState(%@) for UNKNOWN call(id: %d)", VSLCallStateString(callInfo.state) , call_id);
             }
         }
     }
 }
 
 static void onTransportStateChanged(pjsip_transport *tp, pjsip_transport_state state, const pjsip_transport_state_info *info) {
-    //VSLLogVerbose(@"Transport state changed to: %@", VSLTransportStateName(state));
+    NSLog(@"Transport state changed to: %@", VSLTransportStateName(state));
     
     if ([[VSLEndpoint sharedEndpoint].endpointConfiguration hasTLSConfiguration] || [[VSLEndpoint sharedEndpoint].endpointConfiguration hasTCPConfiguration]) {
         VSLCallManager *callManager = [VSLEndpoint sharedEndpoint].callManager;
@@ -988,7 +988,7 @@ static void onTransportStateChanged(pjsip_transport *tp, pjsip_transport_state s
             if (call != nil && ![VSLEndpoint sharedEndpoint].ipChangeInProgress && state == PJSIP_TP_STATE_CONNECTED) {
                 //VSLLogInfo(@"There has been a new transport created. Reinivite the calls to keep the call going.");
                 [call reinvite];
-                //VSLLogError(@"State: %u", state);
+                NSLOG(@"State: %u", state);
             }
         }
     }
@@ -997,14 +997,14 @@ static void onTransportStateChanged(pjsip_transport *tp, pjsip_transport_state s
 //TODO: implement these
 
 static void onCallReplaced(pjsua_call_id old_call_id, pjsua_call_id new_call_id) {
-    //VSLLogVerbose(@"Call replaced");
+    NSLog(@"Call replaced");
 }
 
 static void onNatDetect(const pj_stun_nat_detect_result *res){
     if (res->status != PJ_SUCCESS) {
-        //VSLLogWarning(@"NAT detection failed %@", res->status ? @"YES" : @"NO");
+        NSLog(@"NAT detection failed %@", res->status ? @"YES" : @"NO");
     } else {
-        //VSLLogDebug(@"NAT detected as %s", res->nat_type_name);
+        NSLog(@"NAT detected as %s", res->nat_type_name);
     }
 }
 

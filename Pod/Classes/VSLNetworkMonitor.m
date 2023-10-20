@@ -63,7 +63,7 @@ NSString * const VSLNetworkMonitorChangedNotification = @"VSLNetworkMonitorChang
      *  Don't respond immediately to every network change. Because network changes will happen rapidly and go back an forth
      *  a couple of times, wait a little before posting the notification.
      */
-//    //VSLLogDebug(@"Internet connection changed");
+//    NSLog(@"Internet connection changed");
 
     if (self.isChangingNetwork) {
         return;

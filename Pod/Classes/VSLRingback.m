@@ -46,7 +46,7 @@ static int const VSLRingbackInterval = 4000;
     if (status != PJ_SUCCESS) {
         char statusmsg[PJ_ERR_MSG_SIZE];
         pj_strerror(status, statusmsg, sizeof(statusmsg));
-        //VSLLogDebug(@"Error creating ringback tones, status: %s", statusmsg);
+        NSLog(@"Error creating ringback tones, status: %s", statusmsg);
         return nil;
     }
 
@@ -68,7 +68,7 @@ static int const VSLRingbackInterval = 4000;
     if (status != PJ_SUCCESS) {
         char statusmsg[PJ_ERR_MSG_SIZE];
         pj_strerror(status, statusmsg, sizeof(statusmsg));
-        //VSLLogDebug(@"Error adding media port for ringback tones, status: %s", statusmsg);
+        NSLog(@"Error adding media port for ringback tones, status: %s", statusmsg);
         return nil;
     }
     return self;
@@ -81,7 +81,7 @@ static int const VSLRingbackInterval = 4000;
     if (status != PJ_SUCCESS) {
         char statusmsg[PJ_ERR_MSG_SIZE];
         pj_strerror(status, statusmsg, sizeof(statusmsg));
-        //VSLLogWarning(@"Error removing the port, status: %s", statusmsg);
+        NSLog(@"Error removing the port, status: %s", statusmsg);
         return;
     }
     
@@ -107,7 +107,7 @@ static int const VSLRingbackInterval = 4000;
         if (status != PJ_SUCCESS) {
             char statusmsg[PJ_ERR_MSG_SIZE];
             pj_strerror(status, statusmsg, sizeof(statusmsg));
-            //VSLLogWarning(@"Error removing the port, status: %s", statusmsg);
+            NSLog(@"Error removing the port, status: %s", statusmsg);
         }
     }
 }
