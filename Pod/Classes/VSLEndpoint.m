@@ -322,7 +322,7 @@ static void onTransportStateChanged(pjsip_transport *tp, pjsip_transport_state s
         if (status != PJ_SUCCESS) {
             char statusmsg[PJ_ERR_MSG_SIZE];
             pj_strerror(status, statusmsg, sizeof(statusmsg));
-            NSLOG(@"Error registering thread at PJSUA, status: %s", statusmsg);
+            NSLog(@"Error registering thread at PJSUA, status: %s", statusmsg);
         }
     }
 
@@ -408,7 +408,7 @@ static void onTransportStateChanged(pjsip_transport *tp, pjsip_transport_state s
     // Register thread if needed.
     NSError *threadError;
     if (![self createPJSIPThreadWithError:&threadError]) {
-        NSLOG(@"Error registering the thread for PJSIP: %@", threadError);
+        NSLog(@"Error registering the thread for PJSIP: %@", threadError);
         return NO;
     }
     
@@ -416,7 +416,7 @@ static void onTransportStateChanged(pjsip_transport *tp, pjsip_transport_state s
     if (status != PJ_SUCCESS) {
         char statusmsg[PJ_ERR_MSG_SIZE];
         pj_strerror(status, statusmsg, sizeof(statusmsg));
-        NSLOG(@"Error getting list of audio codecs, status: %s", statusmsg);
+        NSLog(@"Error getting list of audio codecs, status: %s", statusmsg);
         return NO;
     }
 
@@ -429,7 +429,7 @@ static void onTransportStateChanged(pjsip_transport *tp, pjsip_transport_state s
         if (status != PJ_SUCCESS) {
             char statusmsg[PJ_ERR_MSG_SIZE];
             pj_strerror(status, statusmsg, sizeof(statusmsg));
-            NSLOG(@"Error setting codec priority to the correct value, status: %s", statusmsg);
+            NSLog(@"Error setting codec priority to the correct value, status: %s", statusmsg);
             return NO;
         }
     }
@@ -493,7 +493,7 @@ static void onTransportStateChanged(pjsip_transport *tp, pjsip_transport_state s
     if (status != PJ_SUCCESS) {
         char statusmsg[PJ_ERR_MSG_SIZE];
         pj_strerror(status, statusmsg, sizeof(statusmsg));
-        NSLOG(@"Error getting list of video codecs, status: %d", statusmsg);
+        NSLog(@"Error getting list of video codecs, status: %d", statusmsg);
         return NO;
     } else {
         for (NSUInteger i = 0; i < videoCodecCount; i++) {
@@ -555,7 +555,7 @@ static void logCallBack(int logLevel, const char *data, int len) {
 
     switch (logLevel) {
         case 1:
-            NSLOG(@"%@", logString);
+            NSLog(@"%@", logString);
             break;
         case 2:
             NSLog(@"%@", logString);
@@ -812,7 +812,7 @@ static void onCallTransferStatus(pjsua_call_id callId, int statusCode, const pj_
                     // Call pjsip_transport_shutdown or pjsua_transport_close() for each tId? https://trac.pjsip.org/repos/ticket/1840 '2018: need to deprecate this API'.
                     //VSLLogInfo(@"SUCCESS: Destroyed transport: %d", i);
                 } else {
-                    NSLOG(@"FAILED: Destroyed transport: %d", i);
+                    NSLog(@"FAILED: Destroyed transport: %d", i);
                 }
             }
         }
@@ -905,7 +905,7 @@ static void onCallTransferStatus(pjsua_call_id callId, int statusCode, const pj_
     if (status != PJ_SUCCESS) {
         char statusmsg[PJ_ERR_MSG_SIZE];
         pj_strerror(status, statusmsg, sizeof(statusmsg));
-        NSLOG(@"Error handling ip change, status: %s", statusmsg);
+        NSLog(@"Error handling ip change, status: %s", statusmsg);
     }
 }
 
@@ -943,7 +943,7 @@ static void onIpChangeProgress(pjsua_ip_change_op op, pj_status_t status, const 
             break;
         }
         default:
-            NSLOG(@"Unhandled ip change operation encountered, status: %s", statusmsg);
+            NSLog(@"Unhandled ip change operation encountered, status: %s", statusmsg);
             break;
     }
 }
@@ -988,7 +988,7 @@ static void onTransportStateChanged(pjsip_transport *tp, pjsip_transport_state s
             if (call != nil && ![VSLEndpoint sharedEndpoint].ipChangeInProgress && state == PJSIP_TP_STATE_CONNECTED) {
                 //VSLLogInfo(@"There has been a new transport created. Reinivite the calls to keep the call going.");
                 [call reinvite];
-                NSLOG(@"State: %u", state);
+                NSLog(@"State: %u", state);
             }
         }
     }

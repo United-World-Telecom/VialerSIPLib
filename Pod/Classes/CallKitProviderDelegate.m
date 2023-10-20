@@ -92,7 +92,7 @@ NSString * const CallKitProviderDelegateInboundCallRejectedNotification = @"Call
 
         [call answerWithCompletion:^(NSError *error) {
             if (error) {
-                NSLOG(@"Error answering call(%@) error:%@", call.uuid.UUIDString, error);
+                NSLog(@"Error answering call(%@) error:%@", call.uuid.UUIDString, error);
                 
                 [action fail];
 
@@ -107,7 +107,7 @@ NSString * const CallKitProviderDelegateInboundCallRejectedNotification = @"Call
             }
         }];
     } else {
-        NSLOG(@"Error answering call(%@). No call found", action.callUUID.UUIDString);
+        NSLog(@"Error answering call(%@). No call found", action.callUUID.UUIDString);
         [action fail];
     }
 }
@@ -154,7 +154,7 @@ NSString * const CallKitProviderDelegateInboundCallRejectedNotification = @"Call
 
     [call startWithCompletion:^(NSError *error) {
         if (error) {
-            NSLOG(@"Error starting call(%@) error: %@", call.uuid.UUIDString, error);
+            NSLog(@"Error starting call(%@) error: %@", call.uuid.UUIDString, error);
             [action fail];
         } else {
             //VSLLogInfo(@"Call %@ started", call.uuid.UUIDString);
@@ -179,7 +179,7 @@ NSString * const CallKitProviderDelegateInboundCallRejectedNotification = @"Call
     NSError *muteError;
     [call toggleMute:&muteError];
     if (muteError) {
-        NSLOG(@"Could not mute call(%@). Error: %@", call.uuid.UUIDString, muteError);
+        NSLog(@"Could not mute call(%@). Error: %@", call.uuid.UUIDString, muteError);
         [action fail];
     } else {
         [action fulfill];
@@ -195,7 +195,7 @@ NSString * const CallKitProviderDelegateInboundCallRejectedNotification = @"Call
     NSError *holdError;
     [call toggleHold:&holdError];
     if (holdError) {
-        NSLOG(@"Could not hold call(%@). Error: %@", call.uuid.UUIDString, holdError);
+        NSLog(@"Could not hold call(%@). Error: %@", call.uuid.UUIDString, holdError);
         [action fail];
     } else {
         call.onHold ? [self.callManager.audioController deactivateAudioSession] : [self.callManager.audioController activateAudioSession];
@@ -212,7 +212,7 @@ NSString * const CallKitProviderDelegateInboundCallRejectedNotification = @"Call
     NSError *dtmfError;
     [call sendDTMF:action.digits error:&dtmfError];
     if (dtmfError) {
-        NSLOG(@"Call(%@). Could not send DTMF. Error %@", call.uuid.UUIDString, dtmfError);
+        NSLog(@"Call(%@). Could not send DTMF. Error %@", call.uuid.UUIDString, dtmfError);
         [action fail];
     } else {
         [action fulfill];

@@ -60,7 +60,7 @@
 - (void)startCallToNumber:(NSString *)number forAccount:(VSLAccount *)account completion:(void (^)(VSLCall *call, NSError *error))completion {
     [account registerAccountWithCompletion:^(BOOL success, NSError * _Nullable error) {
         if (!success) {
-            NSLOG(@"Error registering the account: %@", error);
+            NSLog(@"Error registering the account: %@", error);
             dispatch_async(dispatch_get_main_queue(), ^{
                 VSLBlockSafeRun(completion, nil, error);
             });
@@ -73,7 +73,7 @@
 
             [self requestCallKitAction:startCallAction completion:^(NSError *error) {
                 if (error) {
-                    NSLOG(@"Error requesting \"Start Call Transaction\" error: %@", error);
+                    NSLog(@"Error requesting \"Start Call Transaction\" error: %@", error);
                     [self removeCall:call];
                     dispatch_async(dispatch_get_main_queue(), ^{
                         VSLBlockSafeRun(completion, nil, error);
@@ -121,7 +121,7 @@
     CXTransaction *transaction = [[CXTransaction alloc] initWithAction:action];
     [self.callController requestTransaction:transaction completion:^(NSError * _Nullable error) {
         if (error) {
-            NSLOG(@"Error requesting transaction: %@. Error:%@", transaction, error);
+            NSLog(@"Error requesting transaction: %@. Error:%@", transaction, error);
             dispatch_async(dispatch_get_main_queue(), ^{
                 VSLBlockSafeRun(completion,error);
             });
@@ -158,7 +158,7 @@
         NSError *hangupError;
         [call hangup:&hangupError];
         if (hangupError) {
-            NSLOG(@"Could not hangup call(%@). Error: %@", call.uuid.UUIDString, hangupError);
+            NSLog(@"Could not hangup call(%@). Error: %@", call.uuid.UUIDString, hangupError);
         } else {
             [self.audioController deactivateAudioSession];
         }

@@ -47,7 +47,7 @@ static NSUInteger const VialerSIPLibVibrateDuration = 1;
 		_audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:self.fileURL error:&error];
         _audioPlayer.numberOfLoops = -1;
         if (error) {
-            NSLOG(@"Audioplayer: %@", [error description]);
+            NSLog(@"Audioplayer: %@", [error description]);
         }
 	}
 	return _audioPlayer;

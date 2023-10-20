@@ -222,7 +222,7 @@ static NSString * const VSLAccountErrorDomain = @"VialerSIPLib.VSLAccount";
     
     status = pjsua_acc_del((pjsua_acc_id)self.accountId);
     if (status != PJ_SUCCESS) {
-        NSLOG(@"Unable to remove account from sip server, status code:%d", status);
+        NSLog(@"Unable to remove account from sip server, status code:%d", status);
     }
     [[VSLEndpoint sharedEndpoint] removeAccount:self];
 }
@@ -232,7 +232,7 @@ static NSString * const VSLAccountErrorDomain = @"VialerSIPLib.VSLAccount";
     NSLog(@"Should force registration: %@", self.forceRegistration ? @"YES" : @"NO");
     
     if (!self.isAccountValid) {
-        NSLOG(@"Account registration failed, invalid account!");
+        NSLog(@"Account registration failed, invalid account!");
         NSError *error = [NSError VSLUnderlyingError:nil
                              localizedDescriptionKey:NSLocalizedString(@"Account is invalid, invalid account!", nil)
                          localizedFailureReasonError:NSLocalizedString(@"Account is invalid, invalid account!", nil)
@@ -263,7 +263,7 @@ static NSString * const VSLAccountErrorDomain = @"VialerSIPLib.VSLAccount";
         self.registrationInProgress = NO;
         
         if (status != PJ_SUCCESS) {
-            NSLOG(@"Account registration failed");
+            NSLog(@"Account registration failed");
             NSError *error = [NSError VSLUnderlyingError:nil
                                  localizedDescriptionKey:NSLocalizedString(@"Account registration failed", nil)
                              localizedFailureReasonError:[NSString stringWithFormat:NSLocalizedString(@"PJSIP status code: %d", nil), status]
@@ -306,7 +306,7 @@ static NSString * const VSLAccountErrorDomain = @"VialerSIPLib.VSLAccount";
     status = pjsua_acc_set_registration((pjsua_acc_id)self.accountId, PJ_FALSE);
     
     if (status != PJ_SUCCESS) {
-        NSLOG(@"Account unregistration failed");
+        NSLog(@"Account unregistration failed");
         if (error != nil) {
             *error = [NSError VSLUnderlyingError:nil
                          localizedDescriptionKey:NSLocalizedString(@"Account unregistration failed", nil)

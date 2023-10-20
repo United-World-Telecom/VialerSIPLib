@@ -269,7 +269,7 @@ NSString * const VSLCallErrorDuringSetupCallNotification = @"VSLCallErrorDuringS
     if (status != PJ_SUCCESS) {
         char statusmsg[PJ_ERR_MSG_SIZE];
         pj_strerror(status, statusmsg, sizeof(statusmsg));
-        NSLOG(@"Error creating call, status: %s", statusmsg);
+        NSLog(@"Error creating call, status: %s", statusmsg);
 
         error = [NSError VSLUnderlyingError:nil
                     localizedDescriptionKey:NSLocalizedString(@"Could not setup call", nil)
@@ -316,7 +316,7 @@ NSString * const VSLCallErrorDuringSetupCallNotification = @"VSLCallErrorDuringS
 - (BOOL)transferToCall:(VSLCall *)secondCall {
     NSError *error;
     if (!self.onHold && ![self toggleHold:&error]) {
-        NSLOG(@"Error holding call: %@", error);
+        NSLog(@"Error holding call: %@", error);
         return NO;
     }
     pj_status_t status = pjsua_call_xfer_replaces((pjsua_call_id)self.callId, (pjsua_call_id)secondCall.callId, 0, nil);
@@ -337,7 +337,7 @@ NSString * const VSLCallErrorDuringSetupCallNotification = @"VSLCallErrorDuringS
         NSError *error;
         [self hangup:&error];
         if (error) {
-            NSLOG(@"Error hangup call: %@", error);
+            NSLog(@"Error hangup call: %@", error);
         }
     } else {
         self.transferStatus = VSLCallTransferStateRejected;
@@ -361,7 +361,7 @@ NSString * const VSLCallErrorDuringSetupCallNotification = @"VSLCallErrorDuringS
         if (status != PJ_SUCCESS) {
             char statusmsg[PJ_ERR_MSG_SIZE];
             pj_strerror(status, statusmsg, sizeof(statusmsg));
-            NSLOG(@"REINVITE failed for call id: %ld, status: %s.", (long)self.callId, statusmsg);
+            NSLog(@"REINVITE failed for call id: %ld, status: %s.", (long)self.callId, statusmsg);
                     } else {
             NSLog(@"REINVITE successfully sent for call id: %ld", (long)self.callId);
         }
@@ -389,7 +389,7 @@ NSString * const VSLCallErrorDuringSetupCallNotification = @"VSLCallErrorDuringS
         if (status != PJ_SUCCESS) {
             char statusmsg[PJ_ERR_MSG_SIZE];
             pj_strerror(status, statusmsg, sizeof(statusmsg));
-            NSLOG(@"Cannot sent UPDATE for call id: %ld, status: %s", (long)self.callId, statusmsg);
+            NSLog(@"Cannot sent UPDATE for call id: %ld, status: %s", (long)self.callId, statusmsg);
         } else {
             NSLog(@"UPDATE sent for call id: %ld", (long)self.callId);
         }
@@ -519,7 +519,7 @@ NSString * const VSLCallErrorDuringSetupCallNotification = @"VSLCallErrorDuringS
         if (status != PJ_SUCCESS) {
             char statusmsg[PJ_ERR_MSG_SIZE];
             pj_strerror(status, statusmsg, sizeof(statusmsg));
-            NSLOG(@"Could not answer call PJSIP returned status: %s", statusmsg);
+            NSLog(@"Could not answer call PJSIP returned status: %s", statusmsg);
 
             NSError *error = [NSError VSLUnderlyingError:nil
                                  localizedDescriptionKey:NSLocalizedString(@"Could not answer call", nil)
@@ -532,7 +532,7 @@ NSString * const VSLCallErrorDuringSetupCallNotification = @"VSLCallErrorDuringS
         }
 
     } else {
-        NSLOG(@"Could not answer call, PJSIP indicated callId(%ld) as invalid", (long)self.callId);
+        NSLog(@"Could not answer call, PJSIP indicated callId(%ld) as invalid", (long)self.callId);
         NSError *error = [NSError VSLUnderlyingError:nil
                              localizedDescriptionKey:NSLocalizedString(@"Could not answer call", nil)
                          localizedFailureReasonError:[NSString stringWithFormat:NSLocalizedString(@"Call Id: %d invalid", nil), self.callId]
@@ -607,7 +607,7 @@ NSString * const VSLCallErrorDuringSetupCallNotification = @"VSLCallErrorDuringS
             NSDictionary *userInfo = @{NSLocalizedDescriptionKey:NSLocalizedString(@"Could not toggle mute call", nil)};
             *error = [NSError errorWithDomain:VSLCallErrorDomain code:VSLCallErrorCannotToggleMute userInfo:userInfo];
         }
-        NSLOG(@"Unable to toggle mute, pjsua has not provided a valid conf_slot for this call");
+        NSLog(@"Unable to toggle mute, pjsua has not provided a valid conf_slot for this call");
         return NO;
     }
 
@@ -624,7 +624,7 @@ NSString * const VSLCallErrorDuringSetupCallNotification = @"VSLCallErrorDuringS
     } else {
         char statusmsg[PJ_ERR_MSG_SIZE];
         pj_strerror(status, statusmsg, sizeof(statusmsg));
-        NSLOG(@"Error toggle muting microphone in call %@, status: %s", self.uuid.UUIDString, statusmsg);
+        NSLog(@"Error toggle muting microphone in call %@, status: %s", self.uuid.UUIDString, statusmsg);
 
         if (error != NULL) {
             NSDictionary *userInfo = @{NSLocalizedDescriptionKey:NSLocalizedString(@"Could not toggle mute call", nil),
@@ -663,7 +663,7 @@ NSString * const VSLCallErrorDuringSetupCallNotification = @"VSLCallErrorDuringS
     } else {
         char statusmsg[PJ_ERR_MSG_SIZE];
         pj_strerror(status, statusmsg, sizeof(statusmsg));
-        NSLOG(@"Error toggle holding in call %@, status: %s", self.uuid.UUIDString, statusmsg);
+        NSLog(@"Error toggle holding in call %@, status: %s", self.uuid.UUIDString, statusmsg);
 
         if (error != NULL) {
             NSDictionary *userInfo = @{NSLocalizedDescriptionKey:NSLocalizedString(@"Could not toggle onhold call", nil),
@@ -708,7 +708,7 @@ NSString * const VSLCallErrorDuringSetupCallNotification = @"VSLCallErrorDuringS
             } else {
                 char statusmsg[PJ_ERR_MSG_SIZE];
                 pj_strerror(status, statusmsg, sizeof(statusmsg));
-                NSLOG(@"Error error sending DTMF for call %@, status: %s", self.uuid.UUIDString, statusmsg);
+                NSLog(@"Error error sending DTMF for call %@, status: %s", self.uuid.UUIDString, statusmsg);
 
                 if (error != NULL) {
                     NSDictionary *userInfo = @{NSLocalizedDescriptionKey:NSLocalizedString(@"Could not send DTMF", nil),

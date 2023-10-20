@@ -152,7 +152,7 @@ NSString * const VSLNotificationUserInfoErrorStatusMessageKey = @"VSLNotificatio
         [account configureWithAccountConfiguration:accountConfiguration error:&accountConfigError];
         if (accountConfigError && error != NULL) {
             *error = accountConfigError;
-            NSLOG(@"Account configuration error: %@", accountConfigError);
+            NSLog(@"Account configuration error: %@", accountConfigError);
             return nil;
         }
     }
@@ -172,14 +172,14 @@ NSString * const VSLNotificationUserInfoErrorStatusMessageKey = @"VSLNotificatio
     NSError *accountConfigError;
     VSLAccount *account = [self createAccountWithSipUser:sipUser error:&accountConfigError];
     if (!account) {
-        NSLOG(@"The configuration of the account has failed:\n%@", accountConfigError);
+        NSLog(@"The configuration of the account has failed:\n%@", accountConfigError);
         completion(NO, nil);
     }
 
     account.forceRegistration = force;
     [account registerAccountWithCompletion:^(BOOL success, NSError * _Nullable error) {
         if (!success) {
-            NSLOG(@"The registration of the account has failed.\n%@", error);
+            NSLog(@"The registration of the account has failed.\n%@", error);
             completion(NO, nil);
         } else {
             completion(YES, account);
