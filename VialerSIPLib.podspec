@@ -9,7 +9,7 @@
 
 Pod::Spec.new do |s|
 	s.name             	= "VialerSIPLib"
-	s.version          	= "3.7.10"
+	s.version          	= "3.7.11"
 	s.summary          	= "Vialer SIP Library for iOS without Cocoalumberjack"
 	s.description      	= "Objective-C wrapper around PJSIP."
 	s.homepage         	= "https://github.com/eduardothiesen/VialerSIPLib"
@@ -27,5 +27,6 @@ Pod::Spec.new do |s|
 	s.resource_bundles  = { 'VialerSIPLib' => 'Pod/Resources/*.wav' }
 
 	s.dependency 'Vialer-pjsip-iOS'
+	s.dependency 'CocoaLumberjack'
   	s.dependency 'Reachability'
 end
