@@ -144,6 +144,7 @@
  */
 - (VSLCall * _Nullable)firstActiveCallForAccount:(VSLAccount * _Nonnull)account;
 
+- (NSArray <VSLCall *> *_Nonnull)activeCallsForAccount:(VSLAccount *_Nullable)account;
 /**
  *  Returns the last call for the given account
  *
