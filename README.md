@@ -1,3 +1,5 @@
+# DEPRECATED
+
 # VialerSIPLib
 
 <!--- [![CI Status](http://img.shields.io/travis/wearespindle/VialerSIPLib.svg?style=flat)](https://travis-ci.org/wearespindle/VialerSIPLib) -->
